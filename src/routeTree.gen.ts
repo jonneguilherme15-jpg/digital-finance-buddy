@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CartoesRouteImport } from './routes/cartoes'
+import { Route as PixRouteImport } from './routes/pix'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CartoesRoute = CartoesRouteImport.update({
+  id: '/cartoes',
+  path: '/cartoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PixRoute = PixRouteImport.update({
+  id: '/pix',
+  path: '/pix',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cartoes': typeof CartoesRoute
+  '/pix': typeof PixRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cartoes': typeof CartoesRoute
+  '/pix': typeof PixRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cartoes': typeof CartoesRoute
+  '/pix': typeof PixRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/cartoes' | '/pix'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/cartoes' | '/pix'
+  id: '__root__' | '/' | '/cartoes' | '/pix'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CartoesRoute: typeof CartoesRoute
+  PixRoute: typeof PixRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cartoes': {
+      id: '/cartoes'
+      path: '/cartoes'
+      fullPath: '/cartoes'
+      preLoaderRoute: typeof CartoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pix': {
+      id: '/pix'
+      path: '/pix'
+      fullPath: '/pix'
+      preLoaderRoute: typeof PixRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CartoesRoute: CartoesRoute,
+  PixRoute: PixRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
